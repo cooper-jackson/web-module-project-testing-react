@@ -1,7 +1,63 @@
+import React from 'react';
+import { getByAltText, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import within from '@testing-library/dom';
+import Display from './../Display';
+import Show from './../Show';
 
+const testShow = {
+    //add in approprate test data structure here.
+    name: 'Coop & the Dudes',
+    summary: 'Coop ventures forth with the dudes in this coop-filled venture.',
+    seasons: [{
+        id: 1,
+        name: 'Season 1',
+        episodes: []
+    },
+    {
+        id: 2,
+        name: 'Season 2',
+        episodes: []
+    },
+    {
+        id: 3,
+        name: 'Season 3',
+        episodes: []
+    }]
+}
 
+test('renders Dsiplay without errors', ()=>{ 
+    render(<Display/>)
+})
 
+test('tests that fetch button will display Show when pressed', () => {
+    render(<Display/>)
+    let button = screen.getByText(/press to get show data/i)
+    userEvent.click(button)
+    screen.queryByTestId('show-container')
+})
 
+test('tests that fetch button will display Show when pressed', () => {
+    render(<Display show={testShow}/>)
+    let button = screen.getByText(/press to get show data/i)
+    userEvent.click(button)
+    screen.queryByTestId('show-container')
+
+})
+
+test('tests that fetch button will display Show when pressed and dropdown options are equal to dummy', async () => {
+	const testFunc = jest.fn();
+
+	render(<Display displayFunc={testFunc} />);
+
+	const button = screen.getByRole('button');
+
+	userEvent.click(button);
+
+	await waitFor(() => {
+		expect(testFunc).toBeCalledTimes(1);
+	});
+});
 
 
 

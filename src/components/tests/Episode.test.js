@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { getByAltText, render, screen } from '@testing-library/react';
 import Episode from './../Episode';
 
 const testEpisode = {
@@ -14,18 +14,33 @@ const testEpisode = {
 
 const testEpisodeWithoutImage = {
     //Add in approprate test data structure here.
+    id:1,
+    name: "",
+    image: null,
+    season: 1,
+    number: 1,
+    summary: "",
+    runtime: 1
 }
 
 test("renders without error", () => {
+    render(<Episode episode={testEpisode}/>)
+    console.clear()
 
 });
 
 test("renders the summury test passed as prop", ()=>{
-    
+    testEpisode.summary = 'Whatever, you know?'
+    render(<Episode episode={testEpisode}/>)
+    let episodeSummary = screen.queryByText(/Whatever, you know/i)
+    expect(episodeSummary).toBeInTheDocument()
+    expect(episodeSummary).toBeTruthy()
+    expect(episodeSummary).toHaveTextContent(/Whatever, you know/i)
 });
 
 test("renders default image when image is not defined", ()=>{
-    
+    render(<Episode episode={testEpisodeWithoutImage}/>)
+    screen.getByAltText('./stranger_things.png')
 })
 
 //Tasks
